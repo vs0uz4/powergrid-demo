@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\User;
+use App\Models\Category;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Column;
@@ -11,7 +11,7 @@ use PowerComponents\LivewirePowerGrid\PowerGridEloquent;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 
-class UserTable extends PowerGridComponent
+class CategoryTable extends PowerGridComponent
 {
     use ActionButton;
 
@@ -30,19 +30,28 @@ class UserTable extends PowerGridComponent
 
     public function dataSource(): ?Builder
     {
-        return User::query();
+        return Category::query();
     }
 
     public function addColumns(): ?PowerGridEloquent
     {
         return PowerGrid::eloquent()
             ->addColumn('id')
+            ->addColumn('code')
+            ->addColumn('status')
+            ->addColumn('enabled')
             ->addColumn('name')
-            ->addColumn('email')
-            ->addColumn('created_at_formatted', function(User $model) { 
+            ->addColumn('description')
+            ->addColumn('enabled_at_formatted', function(Category $model) { 
+                return Carbon::parse($model->enabled_at)->format('d/m/Y H:i:s');
+            })
+            ->addColumn('publication_at_formatted', function(Category $model) { 
+                return Carbon::parse($model->publication_at)->format('d/m/Y');
+            })
+            ->addColumn('created_at_formatted', function(Category $model) { 
                 return Carbon::parse($model->created_at)->format('d/m/Y H:i:s');
             })
-            ->addColumn('updated_at_formatted', function(User $model) { 
+            ->addColumn('updated_at_formatted', function(Category $model) { 
                 return Carbon::parse($model->updated_at)->format('d/m/Y H:i:s');
             });
     }
@@ -56,16 +65,47 @@ class UserTable extends PowerGridComponent
                 ->makeInputRange(),
 
             Column::add()
+                ->title(__('CODE'))
+                ->field('code')
+                ->makeInputRange(),
+
+            Column::add()
+                ->title(__('STATUS'))
+                ->field('status')
+                ->toggleable(),
+
+            Column::add()
+                ->title(__('ENABLED'))
+                ->field('enabled')
+                ->toggleable(),
+
+            Column::add()
                 ->title(__('NAME'))
                 ->field('name')
                 ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->makeInputText(),
 
             Column::add()
-                ->title(__('EMAIL'))
-                ->field('email')
+                ->title(__('DESCRIPTION'))
+                ->field('description')
                 ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->makeInputText(),
+
+            Column::add()
+                ->title(__('ENABLED AT'))
+                ->field('enabled_at_formatted')
+                ->searchable()
+                ->sortable()
+                ->makeInputDatePicker('enabled_at'),
+
+            Column::add()
+                ->title(__('PUBLICATION AT'))
+                ->field('publication_at_formatted')
+                ->searchable()
+                ->sortable()
+                ->makeInputDatePicker('publication_at'),
 
             Column::add()
                 ->title(__('CREATED AT'))
@@ -100,12 +140,12 @@ class UserTable extends PowerGridComponent
            Button::add('edit')
                ->caption(__('Edit'))
                ->class('bg-indigo-500 text-white')
-               ->route('user.edit', ['user' => 'id']),
+               ->route('category.edit', ['category' => 'id']),
 
            Button::add('destroy')
                ->caption(__('Delete'))
                ->class('bg-red-500 text-white')
-               ->route('user.destroy', ['user' => 'id'])
+               ->route('category.destroy', ['category' => 'id'])
                ->method('delete')
         ];
     }
@@ -123,7 +163,7 @@ class UserTable extends PowerGridComponent
     public function update(array $data ): bool
     {
        try {
-           $updated = User::query()->find($data['id'])->update([
+           $updated = Category::query()->find($data['id'])->update([
                 $data['field'] => $data['value']
            ]);
        } catch (QueryException $exception) {
