@@ -25,4 +25,8 @@ Route::get('/users', function () {
     return view('users');
 })->middleware(['auth'])->name('users.index');
 
+Route::get('/categories', function () {
+    return view('categories');
+})->middleware(['auth'])->name('categories.index');
+
 require __DIR__.'/auth.php';
