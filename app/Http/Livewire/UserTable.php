@@ -59,13 +59,15 @@ class UserTable extends PowerGridComponent
                 ->title(__('NAME'))
                 ->field('name')
                 ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->makeInputText(),
 
             Column::add()
                 ->title(__('EMAIL'))
                 ->field('email')
                 ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->makeInputText(),
 
             Column::add()
                 ->title(__('CREATED AT'))
