@@ -15,6 +15,11 @@ class CategoryTable extends PowerGridComponent
 {
     use ActionButton;
 
+    public int $queues = 2;
+    public string $onQueue = 'categories';
+    public string $onConnection = 'redis';
+    public bool $showExporting = true;
+
     public function setUp()
     {
         $this->showCheckBox()
@@ -42,16 +47,16 @@ class CategoryTable extends PowerGridComponent
             ->addColumn('enabled')
             ->addColumn('name')
             ->addColumn('description')
-            ->addColumn('enabled_at_formatted', function(Category $model) { 
+            ->addColumn('enabled_at_formatted', function(Category $model) {
                 return Carbon::parse($model->enabled_at)->format('d/m/Y H:i:s');
             })
-            ->addColumn('publication_at_formatted', function(Category $model) { 
+            ->addColumn('publication_at_formatted', function(Category $model) {
                 return Carbon::parse($model->publication_at)->format('d/m/Y');
             })
-            ->addColumn('created_at_formatted', function(Category $model) { 
+            ->addColumn('created_at_formatted', function(Category $model) {
                 return Carbon::parse($model->created_at)->format('d/m/Y H:i:s');
             })
-            ->addColumn('updated_at_formatted', function(Category $model) { 
+            ->addColumn('updated_at_formatted', function(Category $model) {
                 return Carbon::parse($model->updated_at)->format('d/m/Y H:i:s');
             });
     }
@@ -84,14 +89,16 @@ class CategoryTable extends PowerGridComponent
                 ->field('name')
                 ->sortable()
                 ->searchable()
-                ->makeInputText(),
+                ->makeInputText()
+                ->editOnClick(),
 
             Column::add()
                 ->title(__('DESCRIPTION'))
                 ->field('description')
                 ->sortable()
                 ->searchable()
-                ->makeInputText(),
+                ->makeInputText()
+                ->editOnClick(),
 
             Column::add()
                 ->title(__('ENABLED AT'))
@@ -159,7 +166,7 @@ class CategoryTable extends PowerGridComponent
     |
     */
 
-    /*
+
     public function update(array $data ): bool
     {
        try {
@@ -187,5 +194,4 @@ class CategoryTable extends PowerGridComponent
 
         return ($updateMessages[$status][$field] ?? $updateMessages[$status]['_default_message']);
     }
-    */
 }

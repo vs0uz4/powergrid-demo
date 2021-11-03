@@ -14,10 +14,32 @@
             </button>
             <ul class="dropdown-menu">
                 @if(in_array('excel',$exportType))
-                    <li><a class="dropdown-item" wire:click="exportToXLS()" href="#">Excel</a></li>
+                    <li class="d-flex">
+                        <div class="dropdown-item">
+                            Excel
+                            <a class="text-black-50" wire:click="exportToXLS()" href="#">
+                                @lang('livewire-powergrid::datatable.labels.all')
+                            </a>
+                            /
+                            <a class="text-black-50" wire:click="exportToXLS(true)" href="#">
+                                @lang('livewire-powergrid::datatable.labels.selected')
+                            </a>
+                        </div>
+                    </li>
                 @endif
                 @if(in_array('csv',$exportType))
-                    <li><a class="dropdown-item" wire:click="exportToCsv()" href="#">Csv</a></li>
+                    <li class="d-flex">
+                        <div class="dropdown-item">
+                            Csv
+                            <a class="text-black-50" wire:click="exportToCsv()" href="#">
+                                @lang('livewire-powergrid::datatable.labels.all')
+                            </a>
+                            /
+                            <a class="text-black-50" wire:click="exportToCsv(true)" href="#">
+                                @lang('livewire-powergrid::datatable.labels.selected')
+                            </a>
+                        </div>
+                    </li>
                 @endif
             </ul>
         </div>

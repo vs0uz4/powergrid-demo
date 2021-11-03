@@ -15,6 +15,11 @@ class UserTable extends PowerGridComponent
 {
     use ActionButton;
 
+    public int $queues = 2;
+    public string $onQueue = 'users';
+    public string $onConnection = 'redis';
+    public bool $showExporting = true;
+
     public function setUp()
     {
         $this->showCheckBox()
@@ -39,10 +44,10 @@ class UserTable extends PowerGridComponent
             ->addColumn('id')
             ->addColumn('name')
             ->addColumn('email')
-            ->addColumn('created_at_formatted', function(User $model) { 
+            ->addColumn('created_at_formatted', function(User $model) {
                 return Carbon::parse($model->created_at)->format('d/m/Y H:i:s');
             })
-            ->addColumn('updated_at_formatted', function(User $model) { 
+            ->addColumn('updated_at_formatted', function(User $model) {
                 return Carbon::parse($model->updated_at)->format('d/m/Y H:i:s');
             });
     }
@@ -60,7 +65,8 @@ class UserTable extends PowerGridComponent
                 ->field('name')
                 ->sortable()
                 ->searchable()
-                ->makeInputText(),
+                ->makeInputText()
+                ->editOnClick(),
 
             Column::add()
                 ->title(__('EMAIL'))
@@ -121,7 +127,7 @@ class UserTable extends PowerGridComponent
     |
     */
 
-    /*
+
     public function update(array $data ): bool
     {
        try {
@@ -149,5 +155,5 @@ class UserTable extends PowerGridComponent
 
         return ($updateMessages[$status][$field] ?? $updateMessages[$status]['_default_message']);
     }
-    */
+
 }

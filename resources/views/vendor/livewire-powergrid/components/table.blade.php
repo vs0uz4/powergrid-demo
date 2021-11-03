@@ -1,11 +1,13 @@
 <x-livewire-powergrid::table-base
     :theme="$theme->table">
     <x-slot name="header">
-        <tr class="{{ $theme->table->trClass }}" style="{{ $theme->table->trStyle }}">
-            <x-livewire-powergrid::checkbox-all
-                :checkbox="$checkbox"
-                :theme="$theme->checkbox"/>
-
+        <tr class="{{ $theme->table->trClass }}"
+            style="{{ $theme->table->trStyle }}">
+            @if($checkbox)
+                <x-livewire-powergrid::checkbox-all
+                    :checkbox="$checkbox"
+                    :theme="$theme->checkbox"/>
+            @endif
             @foreach($columns as $column)
                 <x-livewire-powergrid::cols
                     :column="$column"
@@ -45,29 +47,29 @@
                 </tr>
             </th>
         @else
-            <th>
-                @foreach($data as $row)
-                    <tr class="{{ $theme->table->trBodyClass }}" style="{{ $theme->table->trBodyClass }}"
-                        wire:key="{{ $row->id }}">
+            @foreach($data as $row)
+                <tr class="{{ $theme->table->trBodyClass }}"
+                    style="{{ $theme->table->trBodyStyle }}"
+                    wire:key="{{ $row->{$primaryKey} ?? $loop->index }}">
+                    @if($checkbox)
                         <x-livewire-powergrid::checkbox-row
                             :theme="$theme->checkbox"
                             :attribute="$row->{$checkboxAttribute}"
                             :checkbox="$checkbox"/>
+                    @endif
 
-                        <x-livewire-powergrid::row
-                            :theme="$theme"
-                            :row="$row"
-                            :columns="$columns"/>
+                    <x-livewire-powergrid::row
+                        :primaryKey="$primaryKey"
+                        :theme="$theme"
+                        :row="$row"
+                        :columns="$columns"/>
 
-                        <x-livewire-powergrid::actions
-                            :theme="$theme"
-                            :row="$row"
-                            :actions="$actions"/>
-                    </tr>
-                @endforeach
-            </th>
+                    <x-livewire-powergrid::actions
+                        :theme="$theme"
+                        :row="$row"
+                        :actions="$actions"/>
+                </tr>
+            @endforeach
         @endif
     </x-slot>
 </x-livewire-powergrid::table-base>
-
-

@@ -25,7 +25,7 @@ class UserFactory extends Factory
         $firstName = $this->faker->firstName();
         $lastName = $this->faker->lastName();
         $fullName = $firstName . " " . $lastName;
-        $email = Str::lower($firstName) . "." . Str::lower($lastName) . "@example.net";
+        $email = Str::lower($firstName) . "." . Str::lower($lastName) . $this->faker->randomNumber(nbDigits:5) . "@example.net";
 
         return [
             'name' => $fullName,
