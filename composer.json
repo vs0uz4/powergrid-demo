@@ -9,9 +9,11 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.54",
+        "laravel/horizon": "^5.7",
         "laravel/tinker": "^2.5",
         "livewire/livewire": "^2.5",
-        "power-components/livewire-powergrid": "dev-component-not-found"
+        "power-components/livewire-powergrid": "1.4.x-dev",
+        "predis/predis": "^1.1"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
